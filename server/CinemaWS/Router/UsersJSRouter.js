@@ -5,10 +5,11 @@ const router = express.Router();
 
 // 'http://localhost:8001/users' is the Entry Point
 
+
 // Get All members
 router.route('/').get(async (req, res) => {
   try {
-    const members = await UsersJS.getUsers();
+    const members = await UsersJS.getAllUsers();
     res.json(members); // 200 - OK
   } catch (error) {
     console.error(error)
@@ -19,7 +20,7 @@ router.route('/').get(async (req, res) => {
 // Get subsecriber by ID
 router.route('/:id').get(async (req, res) => {
     const { id } = req.params;
-    const Subs = await UsersJS.getUserByID(id);
+    const Subs = await UsersJS.getUserById(id);
     res.json(Subs);
   });
 
@@ -28,7 +29,7 @@ router.route('/:id').get(async (req, res) => {
 // Add a new subsecriber
 router.route('/').post(async (req, res) => {
     const obj = req.body;
-    const result = await UsersJS.AddUser(obj);
+    const result = await UsersJS.addUser(obj);
     res.status(201).json(result);
 
   });
@@ -40,9 +41,7 @@ router.route('/').post(async (req, res) => {
         console.log('in update router!')
       const { id } = req.params;
       const obj = req.body;
-      console.log('obj to be updated:',obj)
       const result = await UsersJS.updateUser(id, obj);
-      console.log('result',result)
       res.json(result);
     } catch (error) {
       res.status(500).json('There was an error!');

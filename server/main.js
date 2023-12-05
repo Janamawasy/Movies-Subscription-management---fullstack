@@ -15,8 +15,6 @@ const UsersDBRouter = require('./CinemaWS/Router/UsersDBRouter');
 // auth router ::
 const authRouter = require('./CinemaWS/Router/authRouter');
 
-
-
 connectDB()
 
 const app = express();

@@ -28,8 +28,7 @@ function AddUserComp() {
     const [sessionTimeOut,setsessionTimeOut] = useState('')
     const [createdDate,setcreatedDate] = useState(new Date().toLocaleDateString('en-GB'))
     const [isAdmin,setisAdmin] = useState(false)
-    const [IsSaved,setIsSaved] = useState(false) 
-    const [isCanceled,setisCanceled] = useState(false) 
+    const [Info, setInfo] = useState('')
 
     const handlename = (e) => {
         const fullname = e.target.value.split(' ')
@@ -81,34 +80,35 @@ function AddUserComp() {
         const userid = usersdbdata.find((user)=> user.UserName === username)._id
 
         const obj2 = {
-            id: userid,
-            fname: lname,
-            lname: fname,
+            userid: userid,
+            fname: fname,
+            lname: lname,
             sessionTimeOut: sessionTimeOut,
-            createdDate : createdDate,
+            createDate : createdDate,
             isadmin: isAdmin
         }
         const obj3 = {
-            id: userid,
+            userid: userid,
             permissions: checked
         }
 
-        const {data:usersdata} = await axios.post(`${urlUsers}`,obj2)
-        console.log(usersdata)
-        const {data:permsdata} = await axios.post(`${urlPerms}`,obj3)
-        console.log(permsdata)
-        setIsSaved(true)
-
+        if (username && sessionTimeOut && fname && checked.length >= 1){
+            const {data:usersdata} = await axios.post(`${urlUsers}`,obj2)
+            console.log(usersdata)
+            const {data:permsdata} = await axios.post(`${urlPerms}`,obj3)
+            console.log(permsdata)
+            if (permsdata && usersdata){
+                // setIsSaved(true)
+                setInfo('user has been Added successfully')
+            }else{
+                setInfo('Error in Creating new User')                
+            }
+        }else{
+            setInfo('Missing Information, make sure of entering username, session Time Out, full name and at least one checked permetion!')
+        }
     }
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/UsersPage'; // Redirect to "/main/UsersPage"
-    //     }
-    //   }, [isCanceled]);
-
     const handleSwitchChange = (event) => {
-        console.log('checked',event.target.checked)
         setisAdmin(event.target.checked);
       };
 
@@ -116,9 +116,7 @@ function AddUserComp() {
      <div>
         {/* <h2 style={{fontFamily: "monospace"}}> Add User :</h2> */}
         <br/>
-        {IsSaved && (
-                    <h3 style={{fontFamily: "monospace"}}>user has been Added successfully</h3>
-                )}
+        <h3 style={{fontFamily: "monospace"}}>{Info}</h3>
         <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                 <TextField id="outlined-basic" label="Full Name" variant="outlined" onChange={(e)=>handlename(e)}/>
                 <TextField id="outlined-basic" label="UserName" variant="outlined" onChange={(e)=>setusername(e.target.value)}/><br/>

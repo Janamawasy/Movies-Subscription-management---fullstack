@@ -9,7 +9,6 @@ const router = express.Router();
 // Entry Point: 'http://localhost:8001/auth
 
 router.route('/').post(async (req, res) => {
-  console.log('req.body',req.body)
   //req.body is the username and password that written in the Login page inputs as request
   const { username, password } = req.body;
 
@@ -17,16 +16,18 @@ router.route('/').post(async (req, res) => {
   // userExists returns all the data in usersJS about the user
   // fitching user data by id from usersDB 
   const users = await UsersDBBLL.getAllUsersDB();
-  console.log('users',users)
+  console.log("all users in auth", users)
   const userExists = users.find((user)=>user.UserName === username && user.Password===password)
-  console.log('userExists',userExists)
+  console.log('found user', userExists)
 
   if (userExists) {
     const userId = userExists._id // find user's ID
     const ACCESS_SECRET_TOKEN = 'someKey';
-    console.log('userId',userId.toString())
 
-    const userData = await UsersJSBLL.getUserByID(userId.toString())
+    console.log('userid', userId.toString())
+
+    const allUsers = await UsersJSBLL.getAllUsers()
+    const userData = allUsers.find((user)=> user.userid === userId.toString())
     const accessToken = jwt.sign(
       { id: userId ,
       fname: userData.fname,

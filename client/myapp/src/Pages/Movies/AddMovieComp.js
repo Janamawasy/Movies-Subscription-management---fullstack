@@ -15,32 +15,33 @@ function AddMovieComp() {
     const [imageURL,setimageURL] = useState('')
     const [premiered,setpremiered] = useState('')
     const [IsSaved,setIsSaved] = useState(false) 
-    const [isCanceled,setisCanceled] = useState(false) 
+    const [MissingInfo, setMissingInfo] = useState(false)
+    const [info, setinfo] = useState('')
 
     const handleSave = async () => {
-        const obj = {
-            name: name,
-            genres: genres,
-            image : {medium : imageURL},
-            premiered : premiered}
-
-        const {data:movdata} = await axios.post(`${urlMovies}`,obj)
-        if (movdata === "Created!"){
-            setIsSaved(true)
+        if (name && imageURL){
+            const obj = {
+                name: name,
+                genres: genres,
+                image : {medium : imageURL},
+                premiered : premiered}
+    
+            const {data:movdata} = await axios.post(`${urlMovies}`,obj)
+            if (movdata === "Created!"){
+                // setIsSaved(true)
+                setinfo('user has been Added successfully')
+            }
+        }else{
+            // setMissingInfo(true)
+            setinfo('missing information, make sure to enter the movie name and image url')
         }
-    } 
+        
+    }
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/MoviesPage'; // Redirect to "/main/UsersPage"
-    //     }
-    //   }, [isCanceled]);
 
     return (
         <div>
-            {IsSaved && (
-                    <h3 style={{fontFamily: "monospace"}}>user has been Added successfully</h3>
-                )}
+                <h3 style={{fontFamily: "monospace"}}>{info}</h3>
             <br/>
             <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                 <TextField id="outlined-basic" label="Movie's Name" variant="outlined" onChange={(e)=>setname(e.target.value)}/>

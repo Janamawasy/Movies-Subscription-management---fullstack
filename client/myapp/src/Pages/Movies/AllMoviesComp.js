@@ -30,7 +30,7 @@ function AllMoviesComp() {
     const perms = useSelector(state => state.perms);
 
     const Checkperms  = () =>{
-      const aa = perms.find((perm)=>perm==="Delete Movies")
+      const aa = perms?.find((perm)=>perm==="Delete Movies")
       if (aa){
         setdisplaypage(true)
       }
@@ -77,7 +77,6 @@ function AllMoviesComp() {
 
   const displaymovies =  filteredMovies(searchText) || movies
 
-//   const findmov = location.state.movieName;
 let findmov
   if(location.state){
     findmov = location.state.movieName
@@ -85,7 +84,6 @@ let findmov
 
     return (
         <div>
-            AllMoviesComp
             <br/>
             {IsDeleted && (
                     <h4 style={{fontFamily: "cursive"}}>Movie has been Deleted successfully</h4>

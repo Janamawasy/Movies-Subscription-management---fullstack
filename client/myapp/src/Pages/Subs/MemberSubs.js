@@ -28,42 +28,34 @@ function MemberSubs({memId}) {
     const fetchdata = async () => {
         const { data } = await axios.get(urlSubs);
         setsubs(data)
-        console.log('subs',data)
         const { data:data2 } = await axios.get(urlMovies);
         setmovies(data2)
-        console.log('movies',data2)
     };
 
     useEffect(()=>{
         fetchdata();
     },[])
 
-    console.log('movies',movies)
     const memSubs = subs.find((sub)=> sub.MemberId === memId)
-    console.log('memSubs',memSubs)
 
     const getmoviename = (movid) => {
-        console.log('movid',movid)
         const movie = movies.find((mov)=> mov._id === movid)
-        console.log('movie.name@@@@',movie)
         return movie?.name
     }
 
     const handleChange = (event) => {
         setaction(event.target.value);
-        console.log("action",getmoviename(action))
       };
 
-    // memSubs.movies are the movies that member allready watched
-    // memSubs.movies = [{movieId:'',date:''}]
+
     const handleNewSub = () => {
-        if (memSubs && memSubs.Movies && memSubs.Movies.length > 0) {
-            setallreadywatched(memSubs.Movies);
-        }else{
-            setmoviestowatch(movies)
-            console.log('no subs',movies)
-            setdropdown(true) 
-        }
+            if (memSubs && memSubs.Movies && memSubs.Movies.length > 0) {
+                setallreadywatched(memSubs.Movies);
+            }else{
+                setmoviestowatch(movies)
+                console.log('no subs',movies)
+                setdropdown(true) 
+            }
       };
       
       useEffect(() => {
@@ -85,7 +77,6 @@ function MemberSubs({memId}) {
                         movieId: action,
                         date: date
                     }}
-                console.log('obj1',obj1)
                 // create
                 const {data} = await axios.post(urlSubs,obj1)
                 console.log(data)
@@ -100,7 +91,6 @@ function MemberSubs({memId}) {
                     Movies: [...memsubs.Movies,
                         {movieId: action,
                          date: date}]}
-                console.log('obj2',obj2)
                 // update
                 const {data} = await axios.put(`${urlSubs}/${memsubs._id}`,obj2)
                 console.log(data)
@@ -113,7 +103,6 @@ function MemberSubs({memId}) {
 
     return (
         <div>
-            
             {memSubs && (
                 <CardContent>
                 {memSubs.Movies.map((mov,index)=>
@@ -125,14 +114,13 @@ function MemberSubs({memId}) {
                     )}
                 </CardContent>
                 )}
-                <CardActionArea>
+                <CardActionArea sx={{textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Button variant="contained" onClick={()=>handleNewSub()} sx={{ backgroundColor: '#521482' }}>Subscribe to new Movie</Button>
- 
                 <br/><br/>
                 {isAdded && (
                     <h3 style={{fontFamily: "monospace"}}>Movie has been Subscribe successfully</h3>
                 )}
-                {dropdown && moviestowatch && (
+                {dropdown && moviestowatch && (<>
             <Stack spacing={3} direction="row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -150,10 +138,12 @@ function MemberSubs({memId}) {
                 </Select>
                 </FormControl>
                 <Box>
-                <TextField id="outlined-basic" label="Watching Date" variant="outlined" type='Date' onChange={(e)=>setdate(e.target.value)}/>
+                <TextField id="outlined-basic" label="Watching Date" variant="outlined" type='Date' onChange={(e)=>setdate(e.target.value)} />
                 </Box>
                 <Button variant="contained" onClick={handleSave} sx={{ backgroundColor: '#521482' }}>Subscribe</Button>
                 </Stack>
+                <br/>
+                </>
                 )}
                  
 

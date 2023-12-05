@@ -14,14 +14,13 @@ function EditMovieComp({movie}) {
     const [genres,setgenres] = useState(movie.genres)
     const [imgurl,setimgurl] = useState(movie.image.medium)
     const [premiered,setpremiered] = useState(movie.premiered)
-    const [isedited,setisedited] = useState(false) //isCanceled
-    const [isCanceled,setisCanceled] = useState(false)
+    const [isedited,setisedited] = useState(false) 
     const [displaypage , setdisplaypage] = useState(false)
 
     const perms = useSelector(state => state.perms);
 
     const Checkperms  = () =>{
-      const aa = perms.find((perm)=>perm==="Update Movies")
+      const aa = perms?.find((perm)=>perm==="Update Movies")
       if (aa){
         setdisplaypage(true)
       }
@@ -49,17 +48,11 @@ function EditMovieComp({movie}) {
         
     }
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/MoviesPage'; // Redirect to "/main/UsersPage"
-    //     }
-    //   }, [isCanceled]);
 
     return (
         <div>
             {displaypage ? (
                 <div>
-                EditMovieComp
                 <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                     <TextField id="outlined-basic" label="Movie's Name" variant="outlined" defaultValue={movie.name} onChange={(e)=>setname(e.target.value)}/>
                     <TextField id="outlined-basic" label="Genres" variant="outlined" defaultValue={movie.genres} onChange={(e)=>setgenres(e.target.value.split(','))}/><br/>

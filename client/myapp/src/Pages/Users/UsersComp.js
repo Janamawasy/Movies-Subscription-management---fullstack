@@ -8,18 +8,15 @@ import AddUserComp from './AddUserComp';
 
 function UsersComp() {
 
-  console.log('in users comp')
   const [action, setaction] = useState('AllUsers');
 
   const handleChange = (event) => {
     setaction(event.target.value);
-    console.log(action)
   };
 
 
     return (
         <div >
-            UsersComp
             <br/><br/><br/>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
         <Select

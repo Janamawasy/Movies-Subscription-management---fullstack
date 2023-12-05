@@ -17,7 +17,7 @@ import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
 
 function MainPage() {
-  
+
     const location = useLocation();
     const dispatch = useDispatch();
 
@@ -30,33 +30,33 @@ function MainPage() {
 
     useEffect(() => {
       if (location.state) {
+        console.log('location.state', location.state)
         setuserdata(location.state.userdata);
-        console.log('location.state', location.state.userdata);
-        setperms(location.state.userdata.id)
-        setisAdmin(location.state.userdata.isadmin)
-        setuserstatus(location.state.userdata.isadmin)
+        setperms(location.state.userdata?.id)
+        setisAdmin(location.state.userdata?.isadmin)
+        setuserstatus(location.state.userdata?.isadmin)
+        console.log('isadmin', location.state)
       }
-    }, [location.state]);
+    }, []);
 
 /// set user initial permissions in redux
     const setperms = async(id) =>{
-      console.log('userdata.id',id)
-      const {data} = await axios.get(`${urlperms}/${id}`)
-      console.log('data',data)
-      if(data){
-        setuserperms(data.permissions)
-        dispatch({ type: 'SETPERMS', payload: {id: data.id ,perms: data.permissions }});
+      const {data : allUsersPerms} = await axios.get(`${urlperms}`)
+      const userPerms = allUsersPerms?.find((userperms)=> userperms.userid === id)
+      if(userPerms){
+        setuserperms(userPerms.permissions)
+        dispatch({ type: 'SETPERMS', payload: {id: userPerms.userid ,perms: userPerms.permissions }});
       }
     }
 
 /// set user status isadmin: true or false in redux
     const setuserstatus = (isadmin) => {
-      dispatch({ type: 'SETPERMS', payload: {userstatus: isadmin }});
+      dispatch({ type: 'SETUSERSTATUS', payload: {userstatus: isadmin }});
     }
 
     // session time out feature: when user exeed the sessiontimeout, the web will log out
     if (location.state) {
-      const sessionDuration = location.state.userdata.sessionTimeOut * 1000 ; // [sessionTimeOut] in secondes to milliseconds
+      const sessionDuration = location.state.userdata?.sessionTimeOut * 1000 ; // [sessionTimeOut] in secondes to milliseconds
       let loginTime = new Date();
 
       // Function to check remaining time and logout if timeout is exceeded
@@ -85,7 +85,7 @@ function MainPage() {
 
 
     return (
-        <div>
+        <div style={{ backgroundColor: '#f8f2fa', padding: 2 , minHeight: '100vh'}}>
             <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -135,7 +135,7 @@ function MainPage() {
     <Container maxWidth="xl" sx={{ paddingTop: '2rem' }}>
                 <Outlet />
     </Container>
-
+    <br/><br/>
         </div>
     )
 }

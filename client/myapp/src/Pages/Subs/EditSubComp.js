@@ -18,9 +18,7 @@ function EditSubComp({member}) {
     const perms = useSelector(state => state.perms);
 
     const Checkperms  = () =>{
-      console.log('perms',perms)
-      const aa = perms.find((perm)=>perm==="Update Subscriptions")
-      console.log('aa',aa)
+      const aa = perms?.find((perm)=>perm==="Update Subscriptions")
       if (aa){
         setdisplaypage(true)
       }
@@ -38,9 +36,7 @@ function EditSubComp({member}) {
             email: email,
             city: city
         }
-        console.log('obj',obj)
         const {data} = await axios.put(`${urlMember}/${member._id}`,obj)
-        console.log('data888',data)
         if (data === 'Updated!' ){
             setisedited(true)
         }else(
@@ -48,17 +44,10 @@ function EditSubComp({member}) {
         )
     }
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/SubsPage'; // Redirect to "/main/UsersPage"
-    //     }
-    //   }, [isCanceled]);
-
     return (
         <div>
             {displaypage ? (
             <div>
-                EditSubComp
                 <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                     <TextField id="outlined-basic" label="Name" variant="outlined" defaultValue={name} onChange={(e)=>setname(e.target.value)}/>
                     <TextField id="outlined-basic" label="City" variant="outlined" defaultValue={city} onChange={(e)=>setemail(e.target.value)}/><br/>

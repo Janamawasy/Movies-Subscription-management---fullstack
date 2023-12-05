@@ -29,11 +29,8 @@ function CreatAccount() {
     },[])
 
     const handleNewACC = async() => {
-        console.log(username)
-        console.log(password)
         const existuser = users.find((user)=>user.UserName === username)
         if(existuser.UserName && !existuser.Password){
-            console.log('existuser',existuser)
             const obj={
                 Password:password
             }
@@ -56,7 +53,7 @@ function CreatAccount() {
 
 
     return (
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}> 
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#efe6f7'}}> 
             <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                 <h2>Create New Account</h2>
                 <TextField id="outlined-basic" label="UserName" variant="outlined" onChange={(e)=>setusername(e.target.value)}/><br/>

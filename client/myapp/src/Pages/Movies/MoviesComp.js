@@ -16,8 +16,8 @@ function MoviesComp() {
     const perms = useSelector(state => state.perms);
 
     const Checkperms  = () =>{
-      const aa = perms.find((perm)=>perm==="View Movies")
-      const anableadd = perms.find((perm)=>perm==="Create Movies")
+      const aa = perms?.find((perm)=>perm==="View Movies")
+      const anableadd = perms?.find((perm)=>perm==="Create Movies")
       if (aa){
         setdisplaypage(true)
       }
@@ -38,7 +38,6 @@ function MoviesComp() {
       <div>
   {displaypage ? (
       <div>
-        MoviesComp
         <br /><br /><br />
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <Select

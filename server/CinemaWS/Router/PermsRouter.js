@@ -19,7 +19,7 @@ router.route('/').get(async (req, res) => {
 // Get subsecriber by ID
 router.route('/:id').get(async (req, res) => {
     const { id } = req.params;
-    const Subs = await PermsBLL.getPermsByID(id);
+    const Subs = await PermsBLL.getPermsById(id);
     res.json(Subs);
   });
 
@@ -28,7 +28,7 @@ router.route('/:id').get(async (req, res) => {
 // Add a new subsecriber
 router.route('/').post(async (req, res) => {
     const obj = req.body;
-    const result = await PermsBLL.AddPerm(obj);
+    const result = await PermsBLL.addPerm(obj);
     res.status(201).json(result);
 
   });
@@ -40,9 +40,7 @@ router.route('/').post(async (req, res) => {
         console.log('in update router!')
       const { id } = req.params;
       const obj = req.body;
-      console.log('obj to be updated:',obj)
       const result = await PermsBLL.updatePerms(id, obj);
-      console.log('result',result)
       res.json(result);
     } catch (error) {
       res.status(500).json('There was an error!');
@@ -53,7 +51,7 @@ router.route('/').post(async (req, res) => {
 // Delete a subsecriber
 router.route('/:id').delete(async (req, res) => {
     const { id } = req.params;
-    const result = await PermsBLL.deletePerm(id);
+    const result = await PermsBLL.deletePerms(id);
     res.json(result);
   });
 

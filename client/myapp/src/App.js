@@ -27,26 +27,8 @@ function App() {
     return isLoggedIn ? element : <Navigate to="/" />;
   };
   return (
-  //   <div>
-  //   <Router>
-  //     <Routes>
-  //       <Route path='/' element={<Login />}/>
-  //       <Route path='/creataccount' element={<CreatAccount />}/>
-  //       <Route path='/main' element={requireAuth(<MainPage />)}>
-  //         <Route path='UsersPage' element={requireAuth(<UsersComp />)}>
-  //           <Route path='EditUser' element={requireAuth(<EditUserComp />)} />
-  //         </Route>
-  //         <Route path='SubsPage' element={requireAuth(<SubsComp />)}>
-  //           <Route path='EditSub' element={requireAuth(<EditSubComp />)} />
-  //         </Route>
-  //         <Route path='MoviesPage' element={requireAuth(<MoviesComp />)}>
-  //           <Route path='EditMovie' element={requireAuth(<EditMovieComp />)} />
-  //         </Route>
-  //       </Route> 
-  //     </Routes>
-  //   </Router>
-  // </div>
     <div>
+      {/*    <Route path='/main' element={requireAuth(<MainPage />)}>     */}
       
     <Router>
         <Routes>

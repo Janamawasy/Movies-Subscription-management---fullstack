@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 
 // 'Schema' maps to a MongoDB collection and defines the shape of the documents within that collection
 // 'Schema' is the blueprint of the documents
-const userDBSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    UserName: String,
-    Password: String,
+    userid: String,
+    permissions: [String],
     
   },
   { versionKey: false }
 );
 
 // A 'model' is a class with which we construct documents in a collection
-const user = mongoose.model('userDB', userDBSchema , 'usersDB');
+const permission = mongoose.model('permission', userSchema , 'permissions');
 // The first argument is the singular name of the collection that will be created for the model (Mongoose will create the database collection for the above model 'user').
 // The second argument is the schema to use in creating the model.
 // The third argument is the name of the collection.
 
 
-module.exports = user;
+module.exports = permission;

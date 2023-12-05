@@ -24,24 +24,17 @@ function AllUsersComp() {
         const { data } = await axios.get(urlUsers);
         setusers(data)
         prepareData(data)
-        console.log(users)
     };
 
     const prepareData = async (users) => {
-        console.log('users', users);
         const { data: usersDB } = await axios.get(urlUsersDB);
         const { data: perms } = await axios.get(urlPerms);
-        console.log('usersDB', usersDB);
-        console.log('perms', perms);
       
         const preparedUsersData = users.map((user) => {
-          const userDB = usersDB.find((userd) => userd._id === user.id);
-          const userperms = perms.find((userd) => userd.id === user.id);
-          console.log('userDB111', userDB);
-          console.log('userperms111', userperms);
+          const userDB = usersDB.find((userd) => userd._id === user.userid);
+          const userperms = perms.find((userd) => userd.userid === user.userid);
       
           if (userDB && userperms) {
-            console.log('in if !!!');
             const obj = {
               id: userDB._id,
               UserName: userDB.UserName,
@@ -49,7 +42,7 @@ function AllUsersComp() {
               lname: user.lname,
               sessionTimeOut: user.sessionTimeOut,
               isadmin: user.isadmin,
-              createdDate: user.createdDate,
+              createdDate: user.createDate,
               permissions: userperms.permissions,
             };
             return obj;
@@ -58,9 +51,8 @@ function AllUsersComp() {
         });
       
         const filteredUsersData = preparedUsersData.filter((user) => user !== null);
-      
+        console.log('filteredUsersData', filteredUsersData)
         setusersdata(filteredUsersData);
-        console.log('')
         return filteredUsersData;
       };
       
@@ -75,11 +67,23 @@ function AllUsersComp() {
     }
 
     const handleDelete = async(userid) => {
-        await axios.delete(`${urlPerms}/${userid}`)
-        await axios.delete(`${urlUsers}/${userid}`)
-        await axios.delete(`${urlUsersDB}/${userid}`)
-        console.log('Deleted Succesfully!') 
-        setIsDeleted(true)
+        console.log('userid', userid)
+        // userid is _id in usersdburl, amd userid in BOTH permsurl and userurl
+        const {data : data1} = await axios.delete(`${urlUsersDB}/${userid}`)
+
+        const {data : permsdata} = await axios.get(urlPerms)
+        const userperms = permsdata.find((userperms)=> userperms.userid === userid)
+        const {data : data2} = await axios.delete(`${urlPerms}/${userperms?._id}`)
+
+        const {data : usersdata} = await axios.get(urlUsers)
+        const userdata = usersdata.find((user)=> user.userid === userid)
+        const {data : data3} = await axios.delete(`${urlUsers}/${userdata?._id}`)
+
+
+        if (data1 === "Deleted!" && data2 === "Deleted!" && data3 === "Deleted!" ){
+            console.log('Deleted Succesfully!') 
+            setIsDeleted(true)
+        }
     }
 
     return (
@@ -95,7 +99,7 @@ function AllUsersComp() {
                     {usersdata.map((user) => (
                     <Grid item key={user.id} xs={12} md={6}>
                 {/* usersdata.map((user)=> */}
-            <Card key={user.id} sx={{ maxWidth: 400 , backgroundColor:'#eae3fc' , color:'#463675' }}>
+            <Card key={user._id} sx={{ maxWidth: 400 , backgroundColor:'#eae3fc' , color:'#463675' }}>
             <CardActionArea>
                 <CardContent>
                 <Typography gutterBottom variant="body1" component="div">
@@ -105,7 +109,7 @@ function AllUsersComp() {
                     UserName: {user.UserName}  
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div">
-                    session Time Out: {user.sessionTimeOut}  
+                    session Time Out: {user.sessionTimeOut/60}  [min]
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div">
                     created Date: {user.createdDate}  

@@ -13,13 +13,11 @@ function SubsComp() {
     const [displayAdd , setdisplayAdd] = useState(false)
 
     const perms = useSelector(state => state.perms);
-
+    console.log('perms', perms)
+    
     const Checkperms  = () =>{
-      console.log('perms',perms)
       const aa = perms.find((perm)=>perm==="View Subscriptions")
-      const anableadd = perms.find((perm)=>perm==="Create Movies")
-      console.log('aa',aa)
-
+      const anableadd = perms.find((perm)=>perm==="Create Subscriptions")
       if (aa){
         setdisplaypage(true)
       }
@@ -34,14 +32,12 @@ function SubsComp() {
 
     const handleChange = (event) => {
       setaction(event.target.value);
-      console.log(action)
     };
 
     return (
         <div>
           {displaypage ? (
       <div>
-            SubsComp
             <br/><br/><br/>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
         <Select
@@ -49,7 +45,6 @@ function SubsComp() {
           onChange={handleChange}
           displayEmpty
           inputProps={{ 'aria-label': 'Without label' }}
-
         >
           <MenuItem value="">
           </MenuItem>

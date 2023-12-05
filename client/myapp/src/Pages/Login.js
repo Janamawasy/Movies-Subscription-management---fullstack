@@ -17,6 +17,7 @@ function Login() {
 
     const handlelogin = async () => {
         try {
+            console.log(username, password)
             const response = await fetch('http://localhost:8001/auth', {
               method:'post',
               headers: {'Content-Type': 'application/json'},
@@ -32,7 +33,6 @@ function Login() {
               const accessToken = localStorage.getItem('accessToken');
               if (accessToken) {
                 const decodedToken = jwt_decode(accessToken);
-                console.log('decodedToken',decodedToken)
                 setuserdata(decodedToken);
               }
   
@@ -56,7 +56,8 @@ function Login() {
         <div style={{display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh'}}> 
+        height: '100vh',
+        backgroundColor: '#efe6f7'}}> 
 
             <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                 <TextField id="outlined-basic" label="UserName" variant="outlined" onChange={(e)=>setusername(e.target.value)}/><br/>

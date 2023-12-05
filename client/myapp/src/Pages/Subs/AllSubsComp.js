@@ -24,10 +24,7 @@ function AllSubsComp() {
     const perms = useSelector(state => state.perms);
 
     const Checkperms  = () =>{
-      console.log('perms',perms)
-      const aa = perms.find((perm)=>perm==="Delete Subscriptions")
-      console.log('aa',aa)
-
+      const aa = perms?.find((perm)=>perm==="Delete Subscriptions")
       if (aa){
         setdisplaypage(true)
       }
@@ -77,7 +74,7 @@ function AllSubsComp() {
                 <Grid container spacing={2}>
                     {members.map((mem) => (
                     <Grid item key={mem.id} xs={12} md={6}>
-            <Card key={mem._id} sx={{ maxWidth: 450 , backgroundColor:'#eae3fc' , color:'#463675' }}>
+            <Card key={mem._id} sx={{ maxWidth: 550 , backgroundColor:'#eae3fc' , color:'#463675' }}>
             <CardActionArea>
                 <CardContent>
                 <Typography gutterBottom variant="body1" component="div">

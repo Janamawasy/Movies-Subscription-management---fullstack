@@ -12,7 +12,6 @@ function AddSubsComp() {
     const [email,setemail] = useState('')
     const [city,setcity] = useState('')
     const [IsSaved,setIsSaved] = useState(false) 
-    const [isCanceled,setisCanceled] = useState(false) 
 
     const urlMember = 'http://localhost:8001/members'
 
@@ -23,20 +22,16 @@ function AddSubsComp() {
             city : city}
 
         console.log('obj',obj)
-
-        const {data:movdata} = await axios.post(`${urlMember}`,obj)
-        console.log(movdata)
-        if (movdata === "Created!"){
-            setIsSaved(true)
+        if (name && email && city){
+            const {data:movdata} = await axios.post(`${urlMember}`,obj)
+            console.log(movdata)
+            if (movdata === "Created!"){
+                setIsSaved(true)
         }
+        }
+        
     } 
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/SubsPage'; // Redirect to "/main/UsersPage"
-
-    //     }
-    //   }, [isCanceled]);
 
     return (
         <div>
@@ -44,9 +39,9 @@ function AddSubsComp() {
                     <h3 style={{fontFamily: "monospace"}}>user has been Added successfully</h3>
                 )}
             <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
-                <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(e)=>setname(e.target.value)}/>
-                <TextField id="outlined-basic" label="City" variant="outlined" onChange={(e)=>setemail(e.target.value)}/><br/>
-                <TextField id="outlined-basic" label="Email" variant="outlined" onChange={(e)=>setcity(e.target.value)}/>
+                <TextField id="outlined-basic" required label="Name" variant="outlined" onChange={(e)=>setname(e.target.value)}/>
+                <TextField id="outlined-basic" required label="City" variant="outlined" onChange={(e)=>setemail(e.target.value)}/><br/>
+                <TextField id="outlined-basic" required label="Email" variant="outlined" onChange={(e)=>setcity(e.target.value)}/>
             </Box>
             <br/><br/>
             <Stack spacing={3} direction="row">
@@ -55,6 +50,7 @@ function AddSubsComp() {
                     <Button variant="contained" sx={{ backgroundColor: '#521482' }}>Cancle</Button>
                 </NavLink>
             </Stack>
+            
         </div>
     )
 }

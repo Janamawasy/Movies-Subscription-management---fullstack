@@ -19,11 +19,9 @@ import { NavLink } from 'react-router-dom';
 
 
 function EditUserComp({user}) {
-    console.log(user)
     const urlperm1 = 'http://localhost:8001/perms';
     const urluser2 = 'http://localhost:8001/users';
     const urluserdb3 = 'http://localhost:8001/usersDB';
-    console.log(user)
 
     const dispatch = useDispatch();
 
@@ -33,7 +31,6 @@ function EditUserComp({user}) {
     const [sessionTimeOut,setsessionTimeOut] = useState(user.sessionTimeOut)
     const [isAdmin,setisAdmin] = useState(user.isadmin)
     const [isedited,setisedited] = useState(false) 
-    const [isCanceled,setisCanceled] = useState(false) 
 
 
     const handlename = (e) => {
@@ -78,6 +75,8 @@ function EditUserComp({user}) {
     };
 
     const handleEdit = async () => {
+        console.log('checked', checked, user.id)
+
         const obj1 = {
             id: user.id,
             permissions: checked
@@ -92,17 +91,16 @@ function EditUserComp({user}) {
         const obj3 = {
             UserName: username,
         }
-        console.log('obj1',obj1)
-        console.log('obj2',obj2)
-        console.log('obj3',obj3)
+        // user.id is _id in usersdburl , userid in usersurl , userid in permurl => so should find _id in both premsurl and usersurl
+        const {data: usersPerms} = await axios.get(urlperm1)
+        const wantedUserPerms = usersPerms.find((userPerms)=>userPerms.userid === user.id)
+        const {data : data1} = await axios.put(`${urlperm1}/${wantedUserPerms._id}`,obj1)
 
-        const {data : data1} = await axios.put(`${urlperm1}/${user.id}`,obj1)
-        const {data : data2} = await axios.put(`${urluser2}/${user.id}`,obj2)
+        const {data: usersdata} = await axios.get(urluser2)
+        const wantedUser = usersdata.find((userdata)=>userdata.userid === user.id)
+        const {data : data2} = await axios.put(`${urluser2}/${wantedUser._id}`,obj2)
+
         const {data : data3} = await axios.put(`${urluserdb3}/${user.id}`,obj3)
-
-        console.log('dd1',data1)
-        console.log('dd2',data2)
-        console.log('dd3',data3)
 
         if (data1 === 'Updated!' && data2 === 'Updated!' && data3 === 'Updated!' ){
             setisedited(true)
@@ -114,17 +112,10 @@ function EditUserComp({user}) {
         
     }
 
-    // useEffect(() => {
-    //     if (isCanceled) {
-    //       window.location.href = '/main/UsersPage'; // Redirect to "/main/UsersPage"
-    //     }
-    //   }, [isCanceled]);
-
-      
 
     return (
         <div>
-           <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
+            <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' },}} noValidate autoComplete="off">
                 <TextField id="outlined-basic" label="Full Name" variant="outlined" defaultValue={`${user.fname} ${user.lname}`} onChange={(e)=>handlename(e)}/>
                 <TextField id="outlined-basic" label="UserName" variant="outlined" defaultValue={user.UserName} onChange={(e)=>setusername(e.target.value)}/><br/>
                 <TextField id="outlined-basic" label="session Time Out [Min]" variant="outlined" type='Number' defaultValue={(user.sessionTimeOut/60).toFixed(0)} onChange={(e)=>setsessionTimeOut(e.target.value*60)}/>
@@ -164,8 +155,7 @@ function EditUserComp({user}) {
             {isedited && (
                 <h4 style={{fontFamily: "cursive"}}>user data has been edited successfully</h4>
             )}
-
-          
+ 
         </div>
     )
 }
