@@ -3,13 +3,13 @@ require('firebase/compat/firestore'); // Import the Firestore service
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA1MxDCMCOXujsuQsBzvnmZU5bDfryfPhU",
-  authDomain: "movies-managment--proj1.firebaseapp.com",
-  projectId: "movies-managment--proj1",
-  storageBucket: "movies-managment--proj1.appspot.com",
-  messagingSenderId: "816357760491",
-  appId: "1:816357760491:web:d04b02d74a4b759ea50dae",
-  measurementId: "G-9LW0RN695L"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 
